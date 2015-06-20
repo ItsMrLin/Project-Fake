@@ -4,10 +4,13 @@ class chunk:
     start = 0
     end = 0    
     videoCap = None
-    def __init__(self, start, end, video):
+    phonemeName = ""
+
+    def __init__(self, start, end, video, phonemeName = ""):
         self.start = start
         self.end = end
         self.videoCap = video
+        self.phonemeName = phonemeName
 
     def getStart(self):
         return self.start
@@ -15,6 +18,8 @@ class chunk:
         return self.end
     def getVideoCap(self):
         return self.videoCap
+    def getPhonemeName(self):
+        return self.phonemeName        
     def read(self):
         return self.videoCap.read()
     def readLast(self):
