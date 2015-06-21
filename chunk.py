@@ -12,6 +12,12 @@ class Chunk:
         self.videoCap = video
         self.phonemeName = phonemeName
 
+    def __str__(self):
+        return "(" + str(self.start) + ", " + str(self.end) + ", " + str(self.phonemeName) + ")"
+
+    def __repr__(self):
+        return self.__str__()
+
     def getStart(self):
         return self.start
     def getEnd(self):

@@ -8,34 +8,34 @@ class ChunkGraph:
 
     def __init__(self, chunkList):
         self.chunkList = chunkList
-        for i, chunk in enumerate(chunkList):
-            if chunk.getPhonemeName() not in phonemeDict:
-                phonemeDict[chunk.getPhonemeName()] = [i]
+        for i, chunk in enumerate(self.chunkList):
+            if chunk.getPhonemeName() not in self.phonemeDict:
+                self.phonemeDict[chunk.getPhonemeName()] = [i]
             else:
-                phonemeDict[chunk.getPhonemeName()].append(i)
+                self.phonemeDict[chunk.getPhonemeName()].append(i)
 
-    def findShortestPath(phonemeList):
+    def findShortestPath(self, phonemeList):
         '''
         Input: a list of phoneme names
         Output: a list of chunks with the smallest differences between adjacent phonemes
         '''
-        
+
         if len(phonemeList) == 0:
             return []
 
-        shortestDist = [{}] * len(phonemeList)
-        father = [{}] * len(phonemeList)
+        shortestDist = [{} for i in phonemeList]
+        father = [{} for i in phonemeList]
 
-        for initialPhonemeIndex in phonemeDict[phonemeList[0]]
+        for initialPhonemeIndex in self.phonemeDict[phonemeList[0]]:
             shortestDist[0][initialPhonemeIndex] = 0
             father[0][initialPhonemeIndex] = -1
 
-        for i in range(1, len(phonemeList))
+        for i in range(1, len(phonemeList)):
             currentPhonemeName = phonemeList[i]
-            for currentPhonemeIndex in phonemeDict[currentPhonemeName]:
+            for currentPhonemeIndex in self.phonemeDict[currentPhonemeName]:
                 shortestDist[i][currentPhonemeIndex] = sys.maxint
-                for prevPhonemeIndex in phonemeDict[phonemeList[i - 1]]
-                    diff = _getDifference(prevPhonemeIndex, currentPhonemeIndex)
+                for prevPhonemeIndex in self.phonemeDict[phonemeList[i - 1]]:
+                    diff = self._getDifference(prevPhonemeIndex, currentPhonemeIndex)
                     if shortestDist[i][currentPhonemeIndex] > shortestDist[i-1][prevPhonemeIndex] + diff:
                         shortestDist[i][currentPhonemeIndex] = shortestDist[i-1][prevPhonemeIndex] + diff
                         father[i][currentPhonemeIndex] = prevPhonemeIndex
@@ -47,28 +47,29 @@ class ChunkGraph:
                 minDistance = shortestDist[len(phonemeList) - 1][destIndex]
                 minDestIndex = destIndex
 
-        return _traceBackShortestChunkPath(father, minDestIndex)
+        return self._traceBackShortestChunkPath(father, minDestIndex)
         
-    def _traceBackShortestChunkPath(father, destIndex):
+    def _traceBackShortestChunkPath(self, father, destIndex):
         chunkIndex = destIndex
         shortestPathChunkList = []
         for currentFather in reversed(father):
-            chunkList.insert(0, chunkList[chunkIndex])
-            chunkIndex = currentFather[chunkIndex]
+            shortestPathChunkList.insert(0, self.chunkList[chunkIndex])
+            if chunkIndex != -1:
+                chunkIndex = currentFather[chunkIndex]
         return shortestPathChunkList
 
 
-    def _getDifference(chunkIndex1, chunkIndex2):
+    def _getDifference(self, chunkIndex1, chunkIndex2):
         '''
         Calculate and cache chunk differences
         '''
-        if chunkIndex1 in distDict:
-            if chunkIndex2 in distDict[chunkIndex1]:
-                return distDict[chunkIndex1][chunkIndex2]
+        if chunkIndex1 in self.distDict:
+            if chunkIndex2 in self.distDict[chunkIndex1]:
+                return self.distDict[chunkIndex1][chunkIndex2]
             else:
-                distDict[chunkIndex1][chunkIndex2] = chunkList[chunkIndex1].getTransitionWeight(chunkList[chunkIndex2])
-                return distDict[chunkIndex1][chunkIndex2]
+                self.distDict[chunkIndex1][chunkIndex2] = self.chunkList[chunkIndex1].getTransitionWeight(self.chunkList[chunkIndex2])
+                return self.distDict[chunkIndex1][chunkIndex2]
         else:
-            distDict[chunkIndex1] = {}
-            distDict[chunkIndex1][chunkIndex2] = chunkList[chunkIndex1].getTransitionWeight(chunkList[chunkIndex2])
-            return distDict[chunkIndex1][chunkIndex2]
+            self.distDict[chunkIndex1] = {}
+            self.distDict[chunkIndex1][chunkIndex2] = self.chunkList[chunkIndex1].getTransitionWeight(self.chunkList[chunkIndex2])
+            return self.distDict[chunkIndex1][chunkIndex2]
