@@ -10,7 +10,7 @@ def getChunkList(filename, timeList):
     '''
     cap = cv2.VideoCapture(filename)
     if not cap.isOpened(): 
-        print "could not open :",fn
+        print "could not open :",filename
         return
     fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
 
