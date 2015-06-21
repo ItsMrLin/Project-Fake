@@ -1,6 +1,6 @@
 import cv2
 
-class chunk:
+class Chunk:
     start = 0
     end = 0    
     videoCap = None
@@ -21,22 +21,22 @@ class chunk:
     def getPhonemeName(self):
         return self.phonemeName        
     def read(self):
-        return self.videoCap.read()
+        return self.videoCap.read()[1]
     def readLast(self):
         retVal = None
         self.reset()
         for i in range(self.getStart(),self.getEnd()):
-            eh, retVal = self.read()
+            retVal = self.read()
         return retVal
     def reset(self):
         self.getVideoCap().set(cv2.cv.CV_CAP_PROP_POS_FRAMES,self.getStart())
 
-    def getDifference(self, chunk2):
+    def getTransitionWeight(self, chunk2):
         self.reset()
         ret1 = self.readLast()
 
         chunk2.reset()
-        eh, ret2 = chunk2.read()
+        ret2 = chunk2.read()
 
         if (ret1 == None):
             raise Exception("There was an error reading the last frame of the chunk.")
@@ -47,8 +47,6 @@ class chunk:
         ret2 = cv2.cvtColor(ret2,cv2.COLOR_RGB2GRAY)
 
         return sum(sum(cv2.absdiff(ret1,ret2)))
-
-
 
 
 
