@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter1d
 import mechanize
+import csv
 from bs4 import BeautifulSoup
 
 def createVideo(chunks):
@@ -52,3 +53,11 @@ def phonemize(sentence):
     br.open("http://www.speech.cs.cmu.edu/cgi-bin/cmudict?in=" + phoneme_input)
     phonemes = str(BeautifulSoup(br.response().read()).findAll('tt')[1].contents[0])
     return phonemes
+
+def tsvToTimeList(tsvFilename):
+    timeList = []
+    with open(tsvFilename, 'rb') as csvfile:
+        csvReader = csv.reader(csvfile, delimiter="\t")
+        for row in csvReader:
+            timeList.append((int(row[0]),int(row[1]),row[2]))
+    return timeList
