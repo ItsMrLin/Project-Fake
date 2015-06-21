@@ -5,8 +5,7 @@ import mechanize
 import csv
 from bs4 import BeautifulSoup
 from pydub import AudioSegment
-from subprocess import call
-
+import os
 
 def createVideo(chunks):
     chunks[0].reset()
@@ -55,12 +54,10 @@ def createAudio(audioChunks):
         newAudio = newAudio + song[chunk[0]:chunk[1]]
     newAudio.export("audio.wav",format="wav")
 
-
 def writeVideo(chunks, audioChunks):
     createVideo(chunks)
-    createAudio(audioChunks)
-    call(["ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov"])
-
+    createVideo(audioChunks)
+    os.system("ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov")
 
 def phonemize(sentence):
     phoneme_input = sentence.replace(" ", "+")
