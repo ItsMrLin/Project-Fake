@@ -1,6 +1,6 @@
 import cv2
 
-def getPhonemeLists(filename, timeList):
+def getFrameList(filename, timeList):
     '''
     Given filename and a list fo time info tuple (startTime, endTime, phonemeName),
     return a list of tuple containing (startFrameIndex, endFrameIndex, phonemeName)
