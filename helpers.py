@@ -54,12 +54,10 @@ def createAudio(audioChunks):
         newAudio = newAudio + song[chunk[0]:chunk[1]]
     newAudio.export("audio.wav",format="wav")
 
-
 def writeVideo(chunks, audioChunks):
     createVideo(chunks)
     createVideo(audioChunks)
     os.system("ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov")
-
 
 def phonemize(sentence):
     phoneme_input = sentence.replace(" ", "+")
