@@ -1,4 +1,6 @@
 import cv2
+import mechanize
+from bs4 import BeautifulSoup
 
 def createVideo(chunks):
     chunks[0].reset()
@@ -16,3 +18,9 @@ def createVideo(chunks):
     video.release()
     video = None
 
+def phonemize(sentence):
+    phoneme_input = sentence.replace(" ", "+")
+    br = mechanize.Browser()
+    br.open("http://www.speech.cs.cmu.edu/cgi-bin/cmudict?in=" + phoneme_input)
+    phonemes = str(BeautifulSoup(br.response().read()).findAll('tt')[1].contents[0])
+    return phonemes
