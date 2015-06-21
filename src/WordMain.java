@@ -13,17 +13,9 @@ import edu.cmu.sphinx.result.WordResult;
 
 public class WordMain {
     
-	private final static String NUMBERS_OUTPUT = "numbers-timeframes.txt";
-	private final static String NUMBERS_AUDIO = "media/numbers.wav";
-	private final static String NUMBERS_TRANSCRIPT = "media/numbers-transcript.txt";
-	
-	private final static String OBAMA_OUTPUT = "media/obama-timeframes.txt";
-	private final static String OBAMA_AUDIO = "media/obama-speech.wav";
-	private final static String OBAMA_TRANSCRIPT = "media/obama-speech-transcript.txt";
-	
     public static void main(String[] args) throws Exception {
-    	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OBAMA_OUTPUT)));
-    	getWordTimeframes(OBAMA_AUDIO, OBAMA_TRANSCRIPT, out);
+    	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("obama-speech-timeframes.txt")));
+    	getWordTimeframes("media/obama-speech.wav", "media/obama-speech-transcript.txt", out);
     }
     
     public static void getWordTimeframes(String audioFile, String transcriptFile, PrintWriter out) throws Exception {
@@ -65,29 +57,11 @@ public class WordMain {
                 }
                 //System.out.format("  %-25s [%s]hi\n", results.get(aid[i]).getWord().getSpelling(),
                 //		results.get(aid[i]).getTimeFrame());
-                /*WordResult theResult = results.get(aid[i]);
-                String word = theResult.getWord().getSpelling();
-                String phonemesString = GetPhonemeUtil.getPhonemeString(word);
-                phonemesString = phonemesString.replace(".", "").trim();
-                String[] phonemes = phonemesString.split(" ");
-                long wordStart = theResult.getTimeFrame().getStart();
-                long wordEnd = theResult.getTimeFrame().getEnd();
-                long phonemeStart = wordStart;
-                long phonemeLength= (wordEnd-wordStart)/phonemes.length;
-                long phonemeEnd= phonemeStart+phonemeLength;
-                for(String phoneme: phonemes) {
-                	out.println(phonemeStart + "\t" + phonemeEnd
-                    		+ "\t" + phoneme);
-                	phonemeStart = phonemeEnd;
-                	phonemeEnd += phonemeLength;
-                }
-                */
                 WordResult theResult = results.get(aid[i]);
-                String word = theResult.getWord().getSpelling();
-                long wordStart = theResult.getTimeFrame().getStart();
-                long wordEnd = theResult.getTimeFrame().getEnd();
-                out.println(wordStart + "\t" + wordEnd
-                            + "\t" + word);
+                out.println(theResult.getTimeFrame().getStart() + "\t" + theResult.getTimeFrame().getEnd()
+                		+ "\t" + theResult.getWord().getSpelling());
+                System.out.println(theResult.getTimeFrame().getStart() + "\t" + theResult.getTimeFrame().getEnd()
+                		+ "\t" + theResult.getWord().getSpelling());
                 lastId = aid[i];
             }
         }
