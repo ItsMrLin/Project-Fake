@@ -3,13 +3,18 @@ import cv2
 class VideoChunk:
     start = 0
     end = 0    
+    startTime = 0
+    endTime = 0    
     videoCap = None
     phonemeName = ""
 
-    def __init__(self, start, end, video, phonemeName = ""):
-        self.start = start
-        self.end = end
+    def __init__(self, startTime, endTime, phonemeName, video):
+        self.startTime = startTime
+        self.endTime = endTime
         self.videoCap = video
+        self.fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
+        self.start = self.startTime * self.fps / 1000
+        self.end = self.endTime * self.fps / 1000
         self.phonemeName = phonemeName
 
     def __str__(self):
@@ -22,6 +27,10 @@ class VideoChunk:
         return self.start
     def getEnd(self):
         return self.end
+    def getStartTime(self):
+        return self.startTime
+    def getEndTime(self):
+        return self.endTime
     def getVideoCap(self):
         return self.videoCap
     def getPhonemeName(self):

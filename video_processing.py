@@ -1,5 +1,5 @@
 import cv2
-from chunk import Chunk
+from chunk import VideoChunk
 
 def getChunkList(filename, timeList):
     '''
@@ -16,6 +16,7 @@ def getChunkList(filename, timeList):
 
     chunkList = [None] * len(timeList)
     for i, timeTuple in enumerate(timeList):
-        chunkList[i] = Chunk(int(timeTuple[0]*fps/1000), int(timeTuple[1]*fps/1000), cap, timeTuple[2])
+        # chunkList[i] = Chunk(int(timeTuple[0]*fps/1000), int(timeTuple[1]*fps/1000), cap, timeTuple[2])
+        chunkList[i] = VideoChunk(timeTuple[0], timeTuple[1], timeTuple[2], cap)
 
     return chunkList

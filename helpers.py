@@ -59,7 +59,7 @@ def createAudio(audioChunks):
 def writeVideo(chunks, audioChunks):
     createVideo(chunks)
     createVideo(audioChunks)
-    call(["ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov"]
+    call(["ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov"])
 
 
 def phonemize(sentence):
