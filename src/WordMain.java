@@ -58,8 +58,21 @@ public class WordMain {
                 //System.out.format("  %-25s [%s]hi\n", results.get(aid[i]).getWord().getSpelling(),
                 //		results.get(aid[i]).getTimeFrame());
                 WordResult theResult = results.get(aid[i]);
-                out.println(theResult.getTimeFrame().getStart() + "\t" + theResult.getTimeFrame().getEnd()
-                		+ "\t" + theResult.getWord().getSpelling());
+                String word = theResult.getWord().getSpelling();
+                String phonemesString = GetPhonemeUtil.getPhonemeString(word);
+                phonemesString = phonemesString.replace(".", "").trim();
+                String[] phonemes = phonemesString.split(" ");
+                long wordStart = theResult.getTimeFrame().getStart();
+                long wordEnd = theResult.getTimeFrame().getEnd();
+                long phonemeStart = wordStart;
+                long phonemeLength= (wordEnd-wordStart)/phonemes.length;
+                long phonemeEnd= phonemeStart+phonemeLength;
+                for(String phoneme: phonemes) {
+                	out.println(phonemeStart + "\t" + phonemeEnd
+                    		+ "\t" + phoneme);
+                	phonemeStart = phonemeEnd;
+                	phonemeEnd += phonemeLength;
+                }
                 lastId = aid[i];
             }
         }

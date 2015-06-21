@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 
@@ -18,5 +20,20 @@ public class GetPhonemeUtil {
 		}
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(args[2])));
 		WordMain.getWordTimeframes(args[0], args[1], out);
+	}
+	
+	public static String getPhonemeString(String word) {
+		try
+		{
+			ProcessBuilder pb = new ProcessBuilder("python", "getPhonemesHelper.py", "hi");
+			Process p = pb.start();
+			BufferedReader bfr = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = bfr.readLine();
+			return line;
+		}
+		catch (Exception e)
+		{
+			return "";
+		}
 	}
 }
