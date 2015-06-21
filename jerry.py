@@ -11,7 +11,7 @@ testList = [
 
 testList = helpers.tsvToTimeList("words.tsv")
 
-chunkList = video_processing.getChunkList("local/Obama_Immigration_Reform_2014_Speech_Announcing_Executive_Action_[FULL]_Today_on_November_20th.mp4", testList)
+chunkList = video_processing.getChunkList("obama.mp4", testList)
 
 graph = ChunkGraph(chunkList)
 sentence = "americans shouldn't pay taxes"
