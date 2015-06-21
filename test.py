@@ -1,4 +1,4 @@
-from chunk import VideoChunk
+from VideoChunk import VideoChunk
 import cv2
 cap = cv2.VideoCapture('obama.mp4')
 

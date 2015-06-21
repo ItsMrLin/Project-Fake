@@ -1,5 +1,5 @@
 import cv2
-from chunk import VideoChunk
+from VideoChunk import VideoChunk
 
 def getChunkList(filename, timeList):
     '''
