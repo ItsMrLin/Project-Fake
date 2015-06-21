@@ -40,8 +40,10 @@ class VideoChunk:
     def readLast(self):
         retVal = None
         self.reset()
-        for i in range(self.getStart(),self.getEnd()):
-            retVal = self.read()
+        for i in range(self.getStart(),self.getEnd() + 1):
+            tempVal = self.read()
+            if tempVal != None:
+                retVal = tempVal
         return retVal
     def reset(self):
         self.getVideoCap().set(cv2.cv.CV_CAP_PROP_POS_FRAMES,self.getStart())

@@ -1,4 +1,6 @@
 import sys
+import operator
+import numpy as np
 
 class ChunkGraph:
 
@@ -9,10 +11,16 @@ class ChunkGraph:
     def __init__(self, chunkList):
         self.chunkList = chunkList
         for i, chunk in enumerate(self.chunkList):
+            if chunk.getStartTime() < 20000:
+                continue
             if chunk.getPhonemeName() not in self.phonemeDict:
                 self.phonemeDict[chunk.getPhonemeName()] = [i]
             else:
                 self.phonemeDict[chunk.getPhonemeName()].append(i)
+
+        for phoneme in self.phonemeDict.keys():
+            if len(self.phonemeDict[phoneme]) > 5:
+                self.phonemeDict[phoneme] = np.random.choice(self.phonemeDict[phoneme], 5)
 
     def findShortestPath(self, phonemeList):
         '''
@@ -23,6 +31,9 @@ class ChunkGraph:
         if len(phonemeList) == 0:
             return []
 
+        # for v in self.phonemeDict.values():
+        #     print len(v)
+
         shortestDist = [{} for i in phonemeList]
         father = [{} for i in phonemeList]
 
@@ -30,15 +41,27 @@ class ChunkGraph:
             shortestDist[0][initialPhonemeIndex] = 0
             father[0][initialPhonemeIndex] = -1
 
+        # # dynamic programming
+        # for i in range(1, len(phonemeList)):
+        #     print "At Level", i
+        #     currentPhonemeName = phonemeList[i]
+        #     for currentPhonemeIndex in self.phonemeDict[currentPhonemeName]:
+        #         shortestDist[i][currentPhonemeIndex] = sys.maxint
+        #         for prevPhonemeIndex in self.phonemeDict[phonemeList[i - 1]]:
+        #             diff = self._getDifference(prevPhonemeIndex, currentPhonemeIndex)
+        #             if shortestDist[i][currentPhonemeIndex] > shortestDist[i-1][prevPhonemeIndex] + diff:
+        #                 shortestDist[i][currentPhonemeIndex] = shortestDist[i-1][prevPhonemeIndex] + diff
+        #                 father[i][currentPhonemeIndex] = prevPhonemeIndex
+
+        # greedy
         for i in range(1, len(phonemeList)):
+            print "At Level", i
             currentPhonemeName = phonemeList[i]
             for currentPhonemeIndex in self.phonemeDict[currentPhonemeName]:
                 shortestDist[i][currentPhonemeIndex] = sys.maxint
-                for prevPhonemeIndex in self.phonemeDict[phonemeList[i - 1]]:
-                    diff = self._getDifference(prevPhonemeIndex, currentPhonemeIndex)
-                    if shortestDist[i][currentPhonemeIndex] > shortestDist[i-1][prevPhonemeIndex] + diff:
-                        shortestDist[i][currentPhonemeIndex] = shortestDist[i-1][prevPhonemeIndex] + diff
-                        father[i][currentPhonemeIndex] = prevPhonemeIndex
+                prevPhonemeIndex = max(shortestDist[i-1].iteritems(), key=operator.itemgetter(1))[0]
+                shortestDist[i][currentPhonemeIndex] = shortestDist[i-1][prevPhonemeIndex] + self._getDifference(prevPhonemeIndex, currentPhonemeIndex)
+                father[i][currentPhonemeIndex] = prevPhonemeIndex
 
         minDestIndex = -1
         minDistance =  sys.maxint
