@@ -11,7 +11,7 @@ class ChunkGraph:
     def __init__(self, chunkList):
         self.chunkList = chunkList
         for i, chunk in enumerate(self.chunkList):
-            if chunk.getStartTime() < 20000:
+            if chunk.getStartTime() < 10000:
                 continue
             if chunk.getPhonemeName() not in self.phonemeDict:
                 self.phonemeDict[chunk.getPhonemeName()] = [i]
@@ -19,8 +19,8 @@ class ChunkGraph:
                 self.phonemeDict[chunk.getPhonemeName()].append(i)
 
         for phoneme in self.phonemeDict.keys():
-            if len(self.phonemeDict[phoneme]) > 5:
-                self.phonemeDict[phoneme] = np.random.choice(self.phonemeDict[phoneme], 5)
+            if len(self.phonemeDict[phoneme]) > 10:
+                self.phonemeDict[phoneme] = np.random.choice(self.phonemeDict[phoneme], 10)
 
     def findShortestPath(self, phonemeList):
         '''

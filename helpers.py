@@ -110,9 +110,13 @@ def _batchSendAndSplit(wordsKepper):
     for i, t in enumerate(wordsKepper):
         phonemes = wordPhonemes[i].strip().split(" ")
         eachPhonemeTime = (t[1] - t[0])/len(phonemes)
-        if eachPhonemeTime <= 90:
+
+        # for j, phoneme in enumerate(phonemes):
+        #         phonemeList.append((t[1] + j*eachPhonemeTime - 60, t[1] + (j+1)*eachPhonemeTime + 60, phoneme))
+
+        if eachPhonemeTime <= 120:
             for j, phoneme in enumerate(phonemes):
-                phonemeList.append((t[1] + j*eachPhonemeTime - 90, t[1] + (j+1)*eachPhonemeTime + 90, phoneme))
+                phonemeList.append((t[1] + j*eachPhonemeTime - 60, t[1] + (j+1)*eachPhonemeTime + 60, phoneme))
         else:
             for j, phoneme in enumerate(phonemes):
                 phonemeList.append((t[1] + j*eachPhonemeTime, t[1] + (j+1)*eachPhonemeTime, phoneme))

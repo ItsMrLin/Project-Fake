@@ -56,9 +56,11 @@ class VideoChunk:
         ret2 = chunk2.read()
 
         if (ret1 == None):
-            raise Exception("There was an error reading the last frame of the chunk.")
+            return 0
+            # raise Exception("There was an error reading the last frame of the chunk.")
         if (ret2 == None):
-            raise Exception("There was an error reading the first frame of the chunk.")
+            return 0
+            # raise Exception("There was an error reading the first frame of the chunk.")
 
         ret1 = cv2.cvtColor(ret1,cv2.COLOR_RGB2GRAY)
         ret2 = cv2.cvtColor(ret2,cv2.COLOR_RGB2GRAY)
