@@ -25,7 +25,9 @@ print "done creat graph"
 # sentence = "how do you think of jay peg"
 # sentence = "AH AH AH AH AH AH"
 # sentence = "uh uh uh uh uh uh"
-sentence = "i think we are the best ever"
+# sentence = "i think we are the best ever"
+# sentence = "Georgia Tech is the best"
+sentence = "how you doing"
 rawPhonemeInput = sentence.split()
 phonemeInput = []
 for rawInput in rawPhonemeInput:

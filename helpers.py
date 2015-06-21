@@ -53,7 +53,7 @@ def createVideo(chunks):
     video = None
 
 def createAudio(audioChunks): 
-    song = AudioSegment.from_wav("media/obama-speech.wav")
+    song = AudioSegment.from_wav("media/obama-speech-2.wav")
     newAudio = song[0:0]
     for chunk in audioChunks:
         newAudio = newAudio + song[chunk[0]:chunk[1]]
@@ -71,12 +71,12 @@ def phonemize(sentence):
     phonemes = str(BeautifulSoup(br.response().read()).findAll('tt')[1].contents[0])
     return phonemes
 
-def tsvToTimeList(tsvFilename):
+def tsvToTimeList(tsvFilename, paddingInMillisecond = 0):
     timeList = []
     with open(tsvFilename, 'rb') as csvfile:
         csvReader = csv.reader(csvfile, delimiter="\t")
         for row in csvReader:
-            timeList.append((int(row[0]),int(row[1]),row[2]))
+            timeList.append((int(row[0]) - paddingInMillisecond,int(row[1]) + paddingInMillisecond,row[2]))
     return timeList
 
 def wordsToPhonemes(tsvFilename = "words.tsv", outputTsvFile = "phonemes.tsv", batchSize = 5):
