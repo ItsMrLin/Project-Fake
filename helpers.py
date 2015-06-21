@@ -5,8 +5,7 @@ import mechanize
 import csv
 from bs4 import BeautifulSoup
 from pydub import AudioSegment
-from subprocess import call
-
+import os
 
 def createVideo(chunks):
     chunks[0].reset()
@@ -52,14 +51,14 @@ def createAudio(audioChunks):
     song = AudioSegment.from_wav("media/obama-speech.wav")
     newAudio = song[0:0]
     for chunk in audioChunks:
-        newAudio = newAudio + song[chunk[0],chunk[1]]
+        newAudio = newAudio + song[chunk[0]:chunk[1]]
     newAudio.export("audio.wav",format="wav")
 
 
 def writeVideo(chunks, audioChunks):
     createVideo(chunks)
     createVideo(audioChunks)
-    call(["ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov"])
+    os.system("ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov")
 
 
 def phonemize(sentence):
