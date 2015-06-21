@@ -17,12 +17,6 @@ public class GetPhonemeUtil {
 			System.exit(-1);
 		}
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(args[2])));
-		out.println(args[0]);
-		out.println("lol");
-		out.println(args[1]);
-		out.println("bye");
-		out.println(args[2]);
-		out.flush();
-		out.close();
+		WordMain.getWordTimeframes(args[0], args[1], out);
 	}
 }
