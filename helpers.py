@@ -20,6 +20,10 @@ def createVideo(chunks):
         indexes.append(len(images))
         for i in range(chunk.getStart(),chunk.getEnd()):
             img = chunk.read()
+            if (i == chunk.getEnd()-1 or i == chunk.getStart()):
+                cv2.imwrite('obama-'+str(i)+'.jpg',img)
+            
+
             images.append(img)
 
     # Gaussian Smoothing
