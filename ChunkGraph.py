@@ -52,7 +52,7 @@ class ChunkGraph:
     def _traceBackShortestChunkPath(father, destIndex):
         chunkIndex = destIndex
         shortestPathChunkList = []
-        for currentFather in father:
+        for currentFather in reversed(father):
             chunkList.insert(0, chunkList[chunkIndex])
             chunkIndex = currentFather[chunkIndex]
         return shortestPathChunkList
