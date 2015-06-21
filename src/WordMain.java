@@ -13,9 +13,17 @@ import edu.cmu.sphinx.result.WordResult;
 
 public class WordMain {
     
+	private final static String NUMBERS_OUTPUT = "numbers-timeframes.txt";
+	private final static String NUMBERS_AUDIO = "media/numbers.wav";
+	private final static String NUMBERS_TRANSCRIPT = "media/numbers-transcript.txt";
+	
+	private final static String OBAMA_OUTPUT = "media/obama-timeframes.txt";
+	private final static String OBAMA_AUDIO = "media/obama-speech.wav";
+	private final static String OBAMA_TRANSCRIPT = "media/obama-speech-transcript.txt";
+	
     public static void main(String[] args) throws Exception {
-    	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("numbers-timeframes.txt")));
-    	getWordTimeframes("media/numbers.wav", "media/numbers-transcript.txt", out);
+    	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(OBAMA_OUTPUT)));
+    	getWordTimeframes(OBAMA_AUDIO, OBAMA_TRANSCRIPT, out);
     }
     
     public static void getWordTimeframes(String audioFile, String transcriptFile, PrintWriter out) throws Exception {
