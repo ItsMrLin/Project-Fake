@@ -5,7 +5,7 @@ def getPhonemeLists(filename, timeList):
     Given filename and a list fo time info tuple (startTime, endTime, phonemeName),
     return a list of tuple containing (startFrameIndex, endFrameIndex, phonemeName)
 
-    time is in format hh:mm:ss
+    time is in milliseconds
     '''
     cap = cv2.VideoCapture(filename)
     if not cap.isOpened(): 
@@ -15,13 +15,6 @@ def getPhonemeLists(filename, timeList):
 
     frameList = [None] * len(timeList)
     for i, timeTuple in enumerate(timeList):
-        frameList[i] = (int(_getSec(timeTuple[0])*fps), int(_getSec(timeTuple[1])*fps), timeTuple[2])
+        frameList[i] = (int(timeTuple[0]*fps/1000), int(timeTuple[1]*fps/1000), timeTuple[2])
 
     return frameList
-
-def _getSec(timeString):
-    '''
-    parse time hh:mm:ss and output its value in seconds
-    '''
-    l = timeString.split(':')
-    return int(l[0]) * 3600 + int(l[1]) * 60 + int(l[2])
