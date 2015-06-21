@@ -1,32 +1,70 @@
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import edu.cmu.sphinx.api.Configuration;
+import edu.cmu.sphinx.alignment.LongTextAligner;
 import edu.cmu.sphinx.api.SpeechAligner;
 import edu.cmu.sphinx.result.WordResult;
-import edu.cmu.sphinx.util.TimeFrame;
-
 
 public class WordMain {
-	public static void main(String[] args) throws Exception
-	{
-		Configuration configuration = new Configuration();
-		 
-		// Set path to acoustic model.
-		configuration.setAcousticModelPath("resource:");
-		// Set path to dictionary.
-		configuration.setDictionaryPath("resource:");
-		// Set language model.
-		configuration.setLanguageModelPath("resource:");
-		SpeechAligner aligner = new SpeechAligner("/edu/cmu/sphinx/models/en-us/en-us",
-				"/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict",
-				"/edu/cmu/sphinx/models/en-us/en-us.lm.dmp");
-		List<WordResult> result = aligner.align(new URL("101-42.wav"), "one oh one four two");
-		for(WordResult wordResult: result)
-		{
-			TimeFrame times = wordResult.getTimeFrame();
-			wordResult.getPronunciation();
-			
-		}
-	}
+    
+    public static void main(String[] args) throws Exception {
+    	getWordTimeframes("media/obama-speech.wav", "media/obama-speech-transcript.txt");
+    }
+    
+    public static void getWordTimeframes(String audioFile, String transcriptFile) throws Exception {
+        URL audioUrl;
+        String transcript;
+        audioUrl = new File(audioFile).toURI().toURL();
+        Scanner scanner = new Scanner(new File(transcriptFile));  
+        scanner.useDelimiter("\\Z");  
+        transcript = scanner.next();
+        scanner.close();
+        
+        String acousticModelPath = "res/en_us_generic";
+        String dictionaryPath = "res/en_us_nostress/cmudict-5prealpha.dict";
+        String g2pPath = "res/en_us_nostress/model.fst.ser";
+        SpeechAligner aligner = new SpeechAligner(acousticModelPath, dictionaryPath, g2pPath);
+
+        List<WordResult> results = aligner.align(audioUrl, transcript);
+        List<String> stringResults = new ArrayList<String>();
+        for (WordResult wr : results) {
+            stringResults.add(wr.getWord().getSpelling());
+        }
+        
+        LongTextAligner textAligner = new LongTextAligner(stringResults, 2);
+        List<String> sentences = aligner.getTokenizer().expand(transcript);
+        List<String> words = aligner.sentenceToWords(sentences);
+        
+        int[] aid = textAligner.align(words);
+        
+        int lastId = -1;
+        for (int i = 0; i < aid.length; ++i) {
+            if (aid[i] == -1) {
+                System.out.format("- %s\n", words.get(i));
+            } else {
+                if (aid[i] - lastId > 1) {
+                    for (WordResult result : results.subList(lastId + 1,
+                            aid[i])) {
+                        System.out.format("+ %-25s [%s]\n", result.getWord()
+                                .getSpelling(), result.getTimeFrame());
+                    }
+                }
+                System.out.format("  %-25s [%s]\n", results.get(aid[i])
+                        .getWord().getSpelling(), results.get(aid[i])
+                        .getTimeFrame());
+                lastId = aid[i];
+            }
+        }
+
+        if (lastId >= 0 && results.size() - lastId > 1) {
+            for (WordResult result : results.subList(lastId + 1,
+                    results.size())) {
+                System.out.format("+ %-25s [%s]\n", result.getWord()
+                        .getSpelling(), result.getTimeFrame());
+            }
+        }
+    }
 }

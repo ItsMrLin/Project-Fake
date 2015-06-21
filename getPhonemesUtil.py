@@ -1,7 +1,7 @@
 import subprocess
 import sys
+import os.path
 
-print sys.argv
 if len(sys.argv) != 4:
 	print 'Failed: requires three arguments :('
 	exit()
