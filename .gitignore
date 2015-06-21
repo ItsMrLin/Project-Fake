@@ -2,3 +2,6 @@
 *.mp4
 jerry.py
 local
+*.avi
+*.mov
+
