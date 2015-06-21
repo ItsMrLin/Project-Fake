@@ -14,8 +14,8 @@ import edu.cmu.sphinx.result.WordResult;
 public class WordMain {
     
     public static void main(String[] args) throws Exception {
-    	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("numbers-timeframes.txt")));
-    	getWordTimeframes("media/numbers.wav", "media/numbers-transcript.txt", out);
+    	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("obama-speech-timeframes.txt")));
+    	getWordTimeframes("media/obama-speech.wav", "media/obama-speech-transcript.txt", out);
     }
     
     public static void getWordTimeframes(String audioFile, String transcriptFile, PrintWriter out) throws Exception {
@@ -59,6 +59,8 @@ public class WordMain {
                 //		results.get(aid[i]).getTimeFrame());
                 WordResult theResult = results.get(aid[i]);
                 out.println(theResult.getTimeFrame().getStart() + "\t" + theResult.getTimeFrame().getEnd()
+                		+ "\t" + theResult.getWord().getSpelling());
+                System.out.println(theResult.getTimeFrame().getStart() + "\t" + theResult.getTimeFrame().getEnd()
                 		+ "\t" + theResult.getWord().getSpelling());
                 lastId = aid[i];
             }
