@@ -31,7 +31,7 @@ class chunk:
     def reset(self):
         self.getVideoCap().set(cv2.cv.CV_CAP_PROP_POS_FRAMES,self.getStart())
 
-    def getSimilarity(self, chunk2):
+    def getDifference(self, chunk2):
         self.reset()
         ret1 = self.readLast()
 
