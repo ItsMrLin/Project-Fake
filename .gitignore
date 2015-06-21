@@ -5,3 +5,4 @@ local
 *.avi
 *.mov
 test.py
+*.pyc
