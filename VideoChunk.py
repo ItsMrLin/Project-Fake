@@ -9,12 +9,12 @@ class VideoChunk:
     phonemeName = ""
 
     def __init__(self, startTime, endTime, phonemeName, video):
-        self.startTime = startTime
-        self.endTime = endTime
+        self.startTime = int(startTime)
+        self.endTime = int(endTime)
         self.videoCap = video
-        self.fps = cap.get(cv2.cv.CV_CAP_PROP_FPS)
-        self.start = self.startTime * self.fps / 1000
-        self.end = self.endTime * self.fps / 1000
+        self.fps = video.get(cv2.cv.CV_CAP_PROP_FPS)
+        self.start = int(self.startTime * self.fps / 1000)
+        self.end = int(self.endTime * self.fps / 1000)
         self.phonemeName = phonemeName
 
     def __str__(self):

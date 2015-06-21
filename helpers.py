@@ -52,13 +52,13 @@ def createAudio(audioChunks):
     song = AudioSegment.from_wav("media/obama-speech.wav")
     newAudio = song[0:0]
     for chunk in audioChunks:
-        newAudio = newAudio + song[chunk[0],chunk[1]]
+        newAudio = newAudio + song[chunk[0]:chunk[1]]
     newAudio.export("audio.wav",format="wav")
 
 
 def writeVideo(chunks, audioChunks):
     createVideo(chunks)
-    createVideo(audioChunks)
+    createAudio(audioChunks)
     call(["ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov"])
 
 
