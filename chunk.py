@@ -1,6 +1,6 @@
 import cv2
 
-class Chunk:
+class VideoChunk:
     start = 0
     end = 0    
     videoCap = None

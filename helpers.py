@@ -4,6 +4,9 @@ from scipy.ndimage.filters import gaussian_filter1d
 import mechanize
 import csv
 from bs4 import BeautifulSoup
+from pydub import AudioSegment
+from subprocess import call
+
 
 def createVideo(chunks):
     chunks[0].reset()
@@ -30,22 +33,34 @@ def createVideo(chunks):
             c = c+1
 
         smoothed = gaussian_filter1d(img_array,sigma=1.5,axis=3)
-        print "smoothed" , smoothed.shape
+        #print "smoothed" , smoothed.shape
         c = 0
         for j in range(indexes[i]-4,indexes[i]+4):
             images[j] = smoothed[:,:,:,c].astype("uint8")
             c = c+1
-
-
     for img in images:
         #cv2.imshow('hi',img)
         video.write(img)
         #raw_input()
-        print img
+        #print img
 
     cv2.destroyAllWindows()
     video.release()
     video = None
+
+def createAudio(audioChunks): 
+    song = AudioSegment.from_wav("media/obama-speech.wav")
+    newAudio = song[0:0]
+    for chunk in audioChunks:
+        newAudio = newAudio + song[chunk[0],chunk[1]]
+    newAudio.export("audio.wav",format="wav")
+
+
+def writeVideo(chunks, audioChunks):
+    createVideo(chunks)
+    createVideo(audioChunks)
+    call(["ffmpeg -i video.mov -i audio.wav -vcodec copy -acodec copy final.mov"]
+
 
 def phonemize(sentence):
     phoneme_input = sentence.replace(" ", "+")
